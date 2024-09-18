@@ -75,7 +75,8 @@ def agregar_producto():
     nuevo_producto = {
         "nombre": data["nombre"],
         "cantidad": int(data["cantidad"]),
-        "precio_unitario": float(data["precio_unitario"])
+        "precio_unitario": int(data["precio_unitario"]),
+        "reservado": 0
     }
     db.inventario.insert_one(nuevo_producto)
     return jsonify({"mensaje": "Producto agregado correctamente"})
