@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Teborg - Inicio</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <h1>Bienvenido a Teborg</h1>
+    <nav>
+        <ul>
+            <li><a href="/contabilidad">Contabilidad</a></li>
+            <li><a href="/inventario">Inventario</a></li>
+            <li><a href="/facturacion">Facturación</a></li>
+            <li><a href="/usuarios">Usuarios</a></li>
+        </ul>
+    </nav>
+    <div id="content">
+        <!-- Contenido principal -->
+    </div>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Facturación - Fábrica de Uniformes</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Gestión de Facturación</h1>
+        <nav>
+            <ul>
+                <li><a href="/">Inicio</a></li>
+                <li><a href="/contabilidad">Contabilidad</a></li>
+                <li><a href="/inventario">Inventario</a></li>
+                <li><a href="/usuarios">Usuarios</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="content">
+        <h2>Crear Factura</h2>
+        <form id="form-factura">
+            <label for="cliente">Cliente:</label>
+            <input type="text" id="cliente" name="cliente" required>
+
+            <h3>Productos</h3>
+            <div id="productos-container">
+                <!-- Aquí se mostrarán los productos disponibles para seleccionar -->
+            </div>
+
+            <button type="button" id="agregar-producto">Agregar Producto</button>
+            <p>Total: <span id="total">0.00</span></p>
+            <button type="submit">Crear Factura</button>
+        </form>
+
+        <h2>Facturas Pendientes</h2>
+        <table id="tabla-facturas">
+            <thead>
+                <tr>
+                    <th>Factura</th>
+                    <th>Cliente</th>
+                    <th>Total</th>
+                    <th>Estado</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Aquí se rellenarán las facturas pendientes -->
+            </tbody>
+        </table>
+    </section>
+
+    <script src="{{ url_for('static', filename='js/facturacion.js') }}"></script>
+</body>
+</html>

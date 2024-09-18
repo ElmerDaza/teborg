@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Inventario - Fábrica de Uniformes</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Gestión de Inventario</h1>
+        <nav>
+            <ul>
+                <li><a href="/">Inicio</a></li>
+                <li><a href="/contabilidad">Contabilidad</a></li>
+                <li><a href="/facturacion">Facturación</a></li>
+                <li><a href="/usuarios">Usuarios</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <section id="content">
+        <h2>Inventario Actual</h2>
+        <table id="tabla-inventario">
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Precio Unitario</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Aquí se rellenarán los registros del inventario -->
+            </tbody>
+        </table>
+        <button id="agregar-producto">Agregar producto</button>
+    </section>
+
+    <script src="{{ url_for('static', filename='js/inventario.js') }}"></script>
+</body>
+</html>
