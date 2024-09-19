@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <title>Facturación - Fábrica de Uniformes</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/facturacion.css') }}">
+
 </head>
 <body>
     <header>
@@ -21,8 +23,10 @@
     <section id="content">
         <h2>Crear Factura</h2>
         <form id="form-factura">
-            <label for="cliente">Cliente:</label>
+            <label for="cliente">Nombre Cliente:</label>
             <input type="text" id="cliente" name="cliente" required>
+            <label for="Idcliente">Identificacion Cliente:</label>
+            <input type="text" id="Idcliente" name="Idcliente" required>
 
             <h3>Productos</h3>
             <div id="productos-container">

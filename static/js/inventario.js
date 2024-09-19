@@ -19,7 +19,10 @@ document.addEventListener("DOMContentLoaded", function() {
                         <td>${producto.precio_unitario}</td>
                         <td>${producto.reservado}</td>
                         <td>${parseInt(producto.cantidad) - parseInt(producto.reservado)}</td>
-                        <td><button class="eliminar-producto" data-id="${producto._id}">Eliminar</button></td>
+                        <td><button class="eliminar-producto" data-id="${producto._id}">Eliminar</button>
+                        <button onclick="editarProducto('${producto._id}', '${producto.nombre}', ${producto.cantidad}, ${producto.precio_unitario}, ${producto.reservado})">
+                        Editar
+                        </button></td>
                     `;
                     tablaInventario.appendChild(nuevaFila);
 
@@ -27,6 +30,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     nuevaFila.querySelector(".eliminar-producto").addEventListener("click", function() {
                         eliminarProducto(producto._id, nuevaFila);
                     });
+                    
                 });
             })
             .catch(error => console.error('Error:', error));
@@ -114,6 +118,60 @@ document.addEventListener("DOMContentLoaded", function() {
         
     });
 });
+
+
+// Abrir el modal con los datos del producto a modificar
+function editarProducto(productoId, nombre, cantidad, precio, reservado) {
+    document.getElementById("producto-id").value = productoId;
+    document.getElementById("editar-nombre").value = nombre;
+    document.getElementById("editar-cantidad").value = cantidad;
+    document.getElementById("editar-precio").value = precio;
+    document.getElementById("reservado").value = reservado;
+    document.getElementById("modal-editar-producto").style.display = "block";
+}
+
+// Cerrar el modal de edición
+function cerrarModal() {
+    document.getElementById("modal-editar-producto").style.display = "none";
+}
+
+// Guardar los cambios del producto modificado
+function guardarCambiosProducto() {
+    const productoId = document.getElementById("producto-id").value;
+    const nombre = document.getElementById("editar-nombre").value;
+    const cantidad = document.getElementById("editar-cantidad").value;
+    const precio_unitario = document.getElementById("editar-precio").value;
+    const reservado = document.getElementById("reservado").value;
+
+
+    const datos = {
+        nombre: nombre,
+        cantidad: parseInt(cantidad),
+        precio_unitario: parseFloat(precio_unitario),
+        reservado: parseInt(reservado)
+    };
+
+    fetch(`/modificar_producto/${productoId}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(datos)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.mensaje) {
+            alert("Producto modificado correctamente");
+            location.reload();  // Recargar la página para mostrar el inventario actualizado
+        } else {
+            alert(data.error);
+        }
+    })
+    .catch(error => {
+        console.error("Error al modificar el producto:", error);
+    });
+}
+
 
 
 

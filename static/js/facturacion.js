@@ -58,6 +58,7 @@ document.addEventListener("DOMContentLoaded", function() {
     formFactura.addEventListener("submit", function(event) {
         event.preventDefault();
         const cliente = document.querySelector("#cliente").value;
+        const Idcliente = document.querySelector("#Idcliente").value;
 
         if (productosSeleccionados.length === 0) {
             alert("Debe seleccionar al menos un producto.");
@@ -65,15 +66,18 @@ document.addEventListener("DOMContentLoaded", function() {
         }
 
         // Enviar datos al servidor para crear la factura
+        const fechaActual = new Date();//fecha y hora actual completa
+
         fetch('/crear_factura', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ cliente, productos: productosSeleccionados, total: totalFactura })
+            body: JSON.stringify({ cliente,Idcliente, productos: productosSeleccionados, total: totalFactura, fecha: fechaActual })
         })
         .then(response => response.json())
         .then(data => {
             alert(data.mensaje);
             cargarFacturasPendientes();  // Recargar las facturas pendientes
+            cargarProductos()//actualizar la cantidad de productos
             formFactura.reset();
             productosSeleccionados = [];
             totalFactura = 0;

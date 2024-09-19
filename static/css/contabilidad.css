@@ -1,0 +1,66 @@
+/* Estilos para la tabla de contabilidad */
+#tabla-contabilidad {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 18px;
+    text-align: left;
+}
+
+#tabla-contabilidad thead {
+    background-color: #0275d8; /* Fondo azul para el encabezado */
+    color: white;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+#tabla-contabilidad th, #tabla-contabilidad td {
+    padding: 12px 15px;
+    border: 1px solid #ddd; /* Líneas sutiles entre celdas */
+}
+
+#tabla-contabilidad tr:nth-child(even) {
+    background-color: #f9f9f9; /* Alternar colores para filas pares */
+}
+
+#tabla-contabilidad tr:hover {
+    background-color: #f1f1f1; /* Color cuando se pasa el mouse por encima */
+}
+
+#tabla-contabilidad td {
+    text-align: center;
+}
+
+#tabla-contabilidad th {
+    text-align: center;
+    background-color: #2c3e50; /* Color más oscuro para el fondo del header */
+}
+
+.total-monto {
+    font-weight: bold;
+    color: #d9534f; /* Resaltar los montos con rojo */
+}
+
+.ingreso {
+    color: #5cb85c; /* Verde para los ingresos */
+}
+
+.egreso {
+    color: #d9534f; /* Rojo para los egresos */
+}
+
+/* Estilo de botones de acción en la tabla */
+#tabla-contabilidad .action-button {
+    background-color: #5cb85c;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+#tabla-contabilidad .action-button:hover {
+    background-color: #4cae4c;
+}

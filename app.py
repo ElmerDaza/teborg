@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 from pymongo import MongoClient
 from bson import ObjectId
+from source import clase_metodos as cm
 
 app = Flask(__name__)
 
@@ -87,6 +88,35 @@ def eliminar_producto(id):
     db.inventario.delete_one({"_id": ObjectId(id)})
     return jsonify({"mensaje": "Producto eliminado correctamente"})
 
+@app.route('/modificar_producto/<producto_id>', methods=['PUT'])
+def modificar_producto(producto_id):
+    try:
+        # Obtener datos enviados desde el formulario
+        datos = request.get_json()
+
+        # Asegurarse de que los campos requeridos estén presentes
+        if 'nombre' not in datos or 'cantidad' not in datos or 'precio_unitario' not in datos:
+            return jsonify({"error": "Faltan campos obligatorios"}), 400
+
+        # Actualizar el producto en la base de datos
+        resultado = db.inventario.update_one(
+            {"_id": ObjectId(producto_id)},
+            {"$set": {
+                "nombre": datos['nombre'],
+                "cantidad": datos['cantidad'],
+                "precio_unitario": datos['precio_unitario'],
+                "reservado": datos['reservado']
+            }}
+        )
+
+        if resultado.matched_count == 1:
+            return jsonify({"mensaje": "Producto actualizado correctamente"}), 200
+        else:
+            return jsonify({"error": "Producto no encontrado"}), 404
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 
 @app.route('/facturacion')
 def facturacion():
@@ -98,6 +128,7 @@ def crear_factura():
     productos_facturados = data["productos"]  # Lista de productos y cantidades facturadas
     cliente = data["cliente"]
     total = data["total"]
+    fecha = data["fecha"]
 
     # Verificar si hay suficiente stock antes de reservar los productos
     for producto in productos_facturados:
@@ -117,8 +148,10 @@ def crear_factura():
     # Crear la factura
     nueva_factura = {
         "cliente": cliente,
+        "Id Cliente":data["Idcliente"],
         "productos": productos_facturados,
         "total": total,
+        "fecha": fecha,
         "estado": "pendiente"  # Factura creada, pero pendiente de pago
     }
     db.facturas.insert_one(nueva_factura)
@@ -128,16 +161,18 @@ def crear_factura():
 @app.route('/confirmar_pago/<factura_id>', methods=['POST'])
 def confirmar_pago(factura_id):
     factura = db.facturas.find_one({"_id": ObjectId(factura_id)})
-
+    #generar factura.pdf
+    cm.generar_factura_pdf(factura)
     if factura and factura["estado"] == "pendiente":
         productos_facturados = factura["productos"]
-
+        list_product=""
         # Reducir la cantidad del inventario y liberar las reservas
         for producto in productos_facturados:
             db.inventario.update_one(
                 {"nombre": producto["nombre"]},
                 {"$inc": {"cantidad": -producto["cantidad"], "reservado": -producto["cantidad"]}}
             )
+            list_product+=producto["nombre"]+", "
 
         # Actualizar el estado de la factura a "pagada"
         db.facturas.update_one(
@@ -145,9 +180,43 @@ def confirmar_pago(factura_id):
             {"$set": {"estado": "pagada"}}
         )
 
+        # Crear un documento con los datos recibidos
+        nuevo_registro = {
+            "fecha": factura["fecha"],
+            "descripcion": f"venta de: {list_product}",
+            "monto": factura["total"],
+            "tipo": "ingreso"
+        }
+        # Insertar en la base de datos
+        db.registros_contables.insert_one(nuevo_registro)
+
+
         return jsonify({"mensaje": "Pago confirmado y productos descontados del inventario"}), 200
     else:
         return jsonify({"mensaje": "Factura no encontrada o ya pagada"}), 404
+
+#cancelar la factura pendiente
+@app.route('/cancelar_factura/<factura_id>', methods=['POST'])
+def cancelar_factura(factura_id):
+    factura = db.facturas.find_one({"_id": ObjectId(factura_id)})
+
+    if factura and factura["estado"] == "pendiente":
+        productos_facturados = factura["productos"]
+
+        # Liberar las reservas de los productos
+        for producto in productos_facturados:
+            db.inventario.update_one(
+                {"nombre": producto["nombre"]},
+                {"$inc": {"reservado": -producto["cantidad"]}}
+            )
+
+        # Eliminar la factura
+        db.facturas.delete_one({"_id": ObjectId(factura_id)})
+
+        return jsonify({"mensaje": "Factura cancelada y productos liberados"}), 200
+    else:
+        return jsonify({"mensaje": "Factura no encontrada o ya pagada"}), 404
+
 
 # Ruta para obtener las facturas pendientes
 @app.route('/obtener_facturas_pendientes', methods=['GET'])

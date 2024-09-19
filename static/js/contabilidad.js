@@ -6,6 +6,21 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Función para cargar los registros existentes
     function cargarRegistros() {
+
+        // Convertir a la hora local de Colombia (UTC-5)
+        const opciones = {
+            timeZone: 'America/Bogota', // Zona horaria de Colombia (UTC-5)
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: false  // Formato de 24 horas
+        };
+
+        
+
         fetch('/obtener_registros')
             .then(response => response.json())
             .then(data => {
@@ -14,9 +29,13 @@ document.addEventListener("DOMContentLoaded", function() {
 
                 // Recorrer los registros y agregarlos a la tabla
                 data.registros.forEach(registro => {
+                    // Crear una fecha en formato ISO 8601 (UTC)
+                    const fechaUTC = new Date(registro.fecha);
+                    const fechaColombia = fechaUTC.toLocaleString('es-CO', opciones);
+
                     const nuevaFila = document.createElement("tr");
                     nuevaFila.innerHTML = `
-                        <td>${registro.fecha}</td>
+                        <td>${fechaColombia}</td>
                         <td>${registro.descripcion}</td>
                         <td>${registro.monto}</td>
                         <td>${registro.tipo}</td>
