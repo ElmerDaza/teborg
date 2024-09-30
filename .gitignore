@@ -1,3 +1,4 @@
 #ignorar venv
 venv
 __pycache__
+*.pdf

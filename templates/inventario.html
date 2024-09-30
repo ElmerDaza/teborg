@@ -21,42 +21,44 @@
             </ul>
         </nav>
     </header>
+    <div class="container">
+        
+        <section id="content">
+            <h2>Inventario Actual</h2>
+            <table id="tabla-inventario">
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                        <th>Precio Unitario</th>
+                        <th>Reservados</th>
+                        <th>Disponible</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Aquí se rellenarán los registros del inventario -->
+                </tbody>
+            </table>
 
-    <section id="content">
-        <h2>Inventario Actual</h2>
-        <table id="tabla-inventario">
-            <thead>
-                <tr>
-                    <th>Producto</th>
-                    <th>Cantidad</th>
-                    <th>Precio Unitario</th>
-                    <th>Reservados</th>
-                    <th>Disponible</th>
-                    <th>Acción</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Aquí se rellenarán los registros del inventario -->
-            </tbody>
-        </table>
+        </section>
+        <div id="content">
+            <form id="producto-form">
+                <label for="nombre">Nombre del Producto:</label>
+                <input type="text" id="nombre" name="nombre" placeholder="Uniforme Escolar" required>
 
-    </section>
-    <div id="content">
-        <form id="producto-form">
-            <label for="nombre">Nombre del Producto:</label>
-            <input type="text" id="nombre" name="nombre" placeholder="Uniforme Escolar" required>
+                <label for="cantidad">Cantidad en Stock:</label>
+                <input type="number" id="cantidad" name="cantidad" placeholder="100" required min="1">
 
-            <label for="cantidad">Cantidad en Stock:</label>
-            <input type="number" id="cantidad" name="cantidad" placeholder="100" required min="1">
+                <label for="precio_unitario">Precio Unitario:</label>
+                <input type="number" id="precio_unitario" name="precio_unitario" placeholder="25.00" step="0.01" required
+                    min="0.01">
 
-            <label for="precio_unitario">Precio Unitario:</label>
-            <input type="number" id="precio_unitario" name="precio_unitario" placeholder="25.00" step="0.01" required
-                min="0.01">
+                <button type="submit">Registrar Producto</button>
+            </form>
+        </div>
 
-            <button type="submit">Registrar Producto</button>
-        </form>
     </div>
-
     <!-- Modal para editar producto -->
     <div id="modal-editar-producto" style="display:none;">
         <h3>Modificar Producto</h3>

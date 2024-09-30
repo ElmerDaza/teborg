@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     nuevaFila.innerHTML = `
                         <td>${producto.nombre}</td>
                         <td>${producto.cantidad}</td>
-                        <td>${producto.precio_unitario}</td>
+                        <td>${producto.precio_unitario.toLocaleString('es-CO')}</td>
                         <td>${producto.reservado}</td>
                         <td>${parseInt(producto.cantidad) - parseInt(producto.reservado)}</td>
                         <td><button class="eliminar-producto" data-id="${producto._id}">Eliminar</button>
@@ -127,7 +127,7 @@ function editarProducto(productoId, nombre, cantidad, precio, reservado) {
     document.getElementById("editar-cantidad").value = cantidad;
     document.getElementById("editar-precio").value = precio;
     document.getElementById("reservado").value = reservado;
-    document.getElementById("modal-editar-producto").style.display = "block";
+    document.getElementById("modal-editar-producto").style.display = "flex";
 }
 
 // Cerrar el modal de edición

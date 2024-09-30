@@ -1,11 +1,13 @@
 /* Estilos para el formulario de facturación */
 #form-factura {
-    width: 60%;
+    display: flex;
+    width: 90%;
     margin: 20px auto;
     background-color: white;
     padding: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 5px;
+    justify-content: space-between;
 }
 
 #form-factura label {
@@ -51,7 +53,7 @@
     cursor: pointer;
     border-radius: 5px;
     margin-top: 10px;
-    width: 100%;
+    width: 300px;
 }
 
 #form-factura button[type="button"]:hover,

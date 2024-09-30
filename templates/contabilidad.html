@@ -2,10 +2,9 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Contabilidad - Fábrica de Uniformes</title>
+    <title>Contabilidad - TEBORG</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/contabilidad.css') }}">
-
 </head>
 <body>
     <header>
@@ -22,6 +21,19 @@
     
     <section id="content">
         <h2>Registros contables</h2>
+
+        <!-- Sección de filtros por fecha -->
+        <div id="filtros">
+            <label for="fecha-inicio">Fecha Inicio:</label>
+            <input type="date" id="fecha-inicio" name="fecha-inicio">
+            
+            <label for="fecha-fin">Fecha Fin:</label>
+            <input type="date" id="fecha-fin" name="fecha-fin">
+            
+            <button id="btn-filtrar">Filtrar</button>
+            <button id="btn-limpiar">Limpiar Filtros</button>
+        </div>
+
         <table id="tabla-contabilidad">
             <thead>
                 <tr>
@@ -37,6 +49,8 @@
             </tbody>
         </table>
         <button id="agregar-registro">Agregar registro</button>
+        
+    
     </section>
 
     <script src="{{ url_for('static', filename='js/contabilidad.js') }}"></script>

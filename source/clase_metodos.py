@@ -1,6 +1,6 @@
 from reportlab.pdfgen import canvas
 from reportlab.lib.units import cm
-from datetime import datetime
+from datetime import datetime, timedelta
 import pytz
 
 # Calcular la posición X para centrar el texto en la página
@@ -131,3 +131,20 @@ def tranform_fecha(fecha_iso):
 
     #fecha y hora en Colombia
     return (fecha_colombia.strftime("%Y-%m-%d %H:%M:%S"))
+
+def generar_fechas_intermedias(fecha_inicio, fecha_fin):
+    # Convertir las cadenas de fechas en objetos datetime
+    inicio = datetime.strptime(fecha_inicio, '%Y-%m-%d')
+    fin = datetime.strptime(fecha_fin, '%Y-%m-%d')
+
+    # Lista para almacenar las fechas intermedias
+    fechas_intermedias = []
+
+    # Generar las fechas intermedias
+    delta = timedelta(days=1)
+    while inicio <= fin:
+        fechas_intermedias.append(inicio.strftime('%Y-%m-%d'))
+        inicio += delta
+
+    return fechas_intermedias
+
