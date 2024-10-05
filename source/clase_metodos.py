@@ -112,25 +112,12 @@ def generar_factura_pdf(factura):
     c.save()
 
 
-def tranform_fecha(fecha_iso):
+def tranform_fecha(fecha_):
+    # Convertir el timestamp de milisegundos a segundos (dividir por 1000) y luego a datetime
+    fecha = datetime.fromtimestamp(fecha_ / 1000)
+    # Formatear a una cadena con el formato año-mes-día hora:minuto:segundo
+    return (fecha.strftime('%Y-%m-%d %H:%M:%S'))
 
-    # Convertir la cadena ISO a un objeto datetime
-    fecha_utc = datetime.strptime(fecha_iso, "%Y-%m-%dT%H:%M:%S.%fZ")
-
-    # Definir la zona horaria UTC
-    zona_utc = pytz.utc
-
-    # Asignar la zona horaria UTC a la fecha
-    fecha_utc = zona_utc.localize(fecha_utc)
-
-    # Definir la zona horaria de Colombia
-    zona_colombia = pytz.timezone("America/Bogota")
-
-    # Convertir la fecha a la zona horaria de Colombia
-    fecha_colombia = fecha_utc.astimezone(zona_colombia)
-
-    #fecha y hora en Colombia
-    return (fecha_colombia.strftime("%Y-%m-%d %H:%M:%S"))
 
 def generar_fechas_intermedias(fecha_inicio, fecha_fin):
     # Convertir las cadenas de fechas en objetos datetime

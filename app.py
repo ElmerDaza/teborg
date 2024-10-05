@@ -27,11 +27,10 @@ def agregar_registro():
 
     # Crear un documento con los datos recibidos
     # Convertir la cadena de fecha a objeto datetime
-    fecha_iso = data["fecha"]  # Espera una cadena en formato ISO 8601
-    fecha_datetime = datetime.fromisoformat(fecha_iso.replace("Z", "+00:00"))  # Convertir a datetime con zona UTC
+    fecha_ = data["fecha"]  # Espera una fecha en datatime
 
     nuevo_registro = {
-        "fecha": fecha_datetime,
+        "fecha": fecha_,
         "descripcion": data["descripcion"],
         "monto": float(data["monto"]),
         "tipo": tipo
@@ -47,28 +46,25 @@ def obtener_registros():
     # Obtener los parámetros de fecha si existen
     fecha_inicio_str = request.args.get('fecha_inicio')
     fecha_fin_str = request.args.get('fecha_fin')
+    
     filtro={}
     if fecha_inicio_str:
-        fechas_intermedias = cm.generar_fechas_intermedias(fecha_inicio_str,fecha_fin_str)
-        
-    
-        filtro = [{
-            "$match": {
-                "$or": [
-                    {"fecha": {"$regex": f"^{re.escape(fecha)}", "$options": "i"}}
-                    for fecha in fechas_intermedias
-                ]
-            }
-        }]
+        fecha_inicio = int(datetime.strptime(fecha_inicio_str, '%Y-%m-%d').timestamp() * 1000)
+        fecha_fin = int(datetime.strptime(fecha_fin_str, '%Y-%m-%d').timestamp() * 1000)
+
+        filtro = {
+        'fecha': {
+            '$gte': fecha_inicio,
+            '$lte': fecha_fin
+        }
+        }
         # Ejecutar el pipeline
-        registros = list(db.registros_contables.aggregate(filtro))
+        registros = (db.registros_contables.find(filtro)).sort("fecha", -1)
         # Obtener los registros filtrados, ordenados por fecha descendente
     else:
         registros = list(db.registros_contables.find(filtro).sort("fecha", -1).limit(30))
     for registro in registros:
         registro["_id"] = str(registro["_id"])  # Convertir ObjectId a string para enviarlo como JSON
-        # Convertir fecha a ISO string
-        registro["fecha"] = registro["fecha"]
 
     # Calcular el balance de la caja usando el filtro
     # Definir el pipeline de agregación
@@ -118,6 +114,8 @@ def obtener_registros():
         balance_caja = resultado.get("valor_en_caja", 0)
 
     return jsonify({"registros": registros, "balance_caja": balance_caja})
+
+
 
 @app.route('/eliminar_registro/<id>', methods=['DELETE'])
 def eliminar_registro(id):
@@ -308,4 +306,4 @@ def usuarios():
     return render_template('usuarios.html')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True,port=5001)

@@ -94,7 +94,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Evento para agregar un nuevo registro
     btnAgregar.addEventListener("click", function() {
-        const fecha = new Date(); // Fecha y hora actual completa
+        const fecha = Date.now(); // Fecha y hora actual completa timestamp
         const monto = prompt("Ingresa el monto:");
         const descripcion = prompt("Ingresa una descripción:");
         const tipo = prompt("¿Es un ingreso o egreso? (ingreso/egreso):").toLowerCase();
@@ -115,7 +115,7 @@ document.addEventListener("DOMContentLoaded", function() {
         fetch('/agregar_registro', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ fecha, descripcion, monto: montoNum, tipo })
+            body: JSON.stringify({ 'fecha':fecha, descripcion, monto: montoNum, tipo })
         })
         .then(response => response.json())
         .then(data => {

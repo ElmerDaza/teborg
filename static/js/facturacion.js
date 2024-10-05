@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
 
         // Enviar datos al servidor para crear la factura
-        const fechaActual = new Date();//fecha y hora actual completa
+        const fechaActual = Date.now(); // Fecha y hora actual completa timestamp
 
         fetch('/crear_factura', {
             method: 'POST',
